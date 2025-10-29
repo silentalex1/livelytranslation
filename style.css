@@ -1,247 +1,158 @@
-:root {
-    --primary-bg: #121212;
-    --secondary-bg: #1E1E1E;
-    --text-color: #E0E0E0;
-    --accent-color: #E67E22; /* Burnt Orange */
-    --green-accent: #2ECC71; /* Emerald Green */
-    --border-color: #333333;
-}
-
-body {
+body, html {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--primary-bg);
-    color: var(--text-color);
+    padding: 0;
+    height: 100%;
     overflow: hidden;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #startup-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--primary-bg);
-    z-index: 1000;
-    animation: fadeOutContainer 1s ease-in forwards 6.5s;
+    height: 100%;
+    animation: fadeOutBackground 1s ease-in-out 5s forwards;
 }
 
-#animated-text-container {
-    font-size: clamp(2.5rem, 8vw, 6rem);
+.morph-text {
+    font-size: 4rem;
     font-weight: bold;
-}
-
-#animated-text {
-    display: inline-block;
     opacity: 0;
-    transform: scale(0.9);
-    animation: morph 7s forwards;
+    animation: fadeInText 1s ease-in-out forwards, morph 4s linear 1s infinite;
 }
 
 .lively-text {
-    color: var(--green-accent);
+    color: #4caf50;
 }
 
-@keyframes morph {
-    0%, 100% { opacity: 0; transform: scale(0.9); }
-    10%, 85% { opacity: 1; transform: scale(1); }
+@keyframes fadeInText {
+    to {
+        opacity: 1;
+    }
 }
 
-@keyframes fadeOutContainer {
+@keyframes fadeOutBackground {
     to {
         opacity: 0;
         visibility: hidden;
     }
 }
 
-#main-content {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding: 2rem;
-    box-sizing: border-box;
-    opacity: 0;
-    animation: fadeInContent 1s forwards 7s;
+@keyframes morph {
+    0%, 100% {
+        content: "Translate lively.";
+    }
+    25% {
+        content: "Traducir animadamente.";
+    }
+    50% {
+        content: "Traduire vivement.";
+    }
+    75% {
+        content: "翻译得活泼.";
+    }
 }
 
-@keyframes fadeInContent {
-    to { opacity: 1; }
+#main-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://images.unsplash.com/photo-1541125867231-5fedf3940105?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+    opacity: 0;
+    animation: fadeInMain 1s ease-in-out 5.5s forwards;
+}
+
+@keyframes fadeInMain {
+    to {
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none;
 }
 
 header {
     text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.globe {
-    width: 45px;
-    height: 45px;
-    background-color: var(--accent-color);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.6rem;
-    color: var(--primary-bg);
-    font-weight: bold;
+    margin-bottom: 2rem;
 }
 
 header h1 {
-    font-size: 2.2rem;
-    margin: 0;
+    font-size: 3rem;
+    color: #ff9800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-main {
-    flex-grow: 1;
+.translator-container {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 100%;
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
 }
 
-.translator-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 1rem;
-    width: 100%;
-    max-width: 1100px;
-    align-items: start;
-}
-
-.text-box-wrapper {
+.text-box-container {
     display: flex;
     flex-direction: column;
+    width: 45%;
+}
+
+textarea, select {
     width: 100%;
-}
-
-.language-header, #language-dropdown {
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--border-color);
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    color: var(--text-color);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom: none;
-    text-align: center;
-}
-
-#language-dropdown {
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E0E0E0' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #ff9800;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #f0f0f0;
+    font-size: 1.1rem;
+    resize: none;
 }
 
 textarea {
-    flex-grow: 1;
-    height: 25vh;
-    min-height: 200px;
-    background-color: var(--secondary-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    padding: 1rem;
-    font-size: 1.1rem;
-    resize: none;
-    box-sizing: border-box;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    transition: all 0.2s ease-in-out;
+    height: 200px;
 }
 
-textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 10px rgba(230, 126, 34, 0.4);
-}
-
-.controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 44px; /* Matches header height */
-}
-
-#switch-languages {
-    background-color: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color);
-    transition: all 0.3s ease;
-}
-
-#switch-languages:hover {
-    border-color: var(--accent-color);
-    color: var(--accent-color);
-    transform: rotate(180deg);
-}
-
-.button-container {
-    margin-top: 2rem;
+select {
+    margin-bottom: 10px;
 }
 
 #translate-button {
-    padding: 0.9rem 3.5rem;
-    background-color: var(--accent-color);
+    padding: 15px 30px;
+    border-radius: 50px;
     border: none;
-    border-radius: 8px;
-    color: var(--primary-bg);
-    font-size: 1.1rem;
-    font-weight: bold;
+    background-color: #ff9800;
+    color: #1a1a1a;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: background-color 0.3s ease;
 }
 
 #translate-button:hover {
-    background-color: #d35400;
-    transform: translateY(-2px);
+    background-color: #f57c00;
 }
 
-#translate-button:active {
-    transform: translateY(0);
+.bottom-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
 }
 
-.leaves-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
+#switch-languages {
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-.leaf {
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background: var(--accent-color);
-    opacity: 0.4;
-    border-radius: 0 50%;
-    animation: fall linear infinite;
-}
-
-@keyframes fall {
-    to {
-        transform: translateY(105vh) rotate(600deg);
-    }
+#switch-languages img {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
 }
