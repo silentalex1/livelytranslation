@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-ag">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LivelyTranslate</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
 
+    <div id="startup-animation">
+        <div id="animated-text">
+            <span class="translate-text">Translate</span>
+            <span class="lively-text">lively.</span>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <header>
+            <div class="logo">
+                <div class="globe">
+                    <div class="t-in-globe">T</div>
+                </div>
+                <h1>LivelyTranslate</h1>
+            </div>
+        </header>
+        <main>
+            <div class="translator-container">
+                <div class="text-box-container">
+                    <textarea id="input-text" placeholder="Enter English text..."></textarea>
+                </div>
+                <div class="controls">
+                    <button id="translate-button">Translate</button>
+                    <button id="switch-languages">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="text-box-container">
+                    <select id="language-dropdown">
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                    </select>
+                    <textarea id="output-text" placeholder="Translation" readonly></textarea>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
