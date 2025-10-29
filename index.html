@@ -4,54 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LivelyTranslate</title>
+    <link rel="icon" href="https://raw.githubusercontent.com/RealE-Learning/LivelyTranslate/main/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23ff8c00%22/><text x=%2250%%22 y=%2250%%22 style=%22font-size: 60px; font-weight: bold; fill: %231a1a1a; text-anchor: middle; dy: .3em;%22>T</text></svg>">
 </head>
 <body>
-
     <div id="startup-animation">
-        <div id="animated-text-container">
-            <span id="animated-text">Translate <span class="lively-text">lively.</span></span>
-        </div>
+        <h1 class="morph-text">Translate <span class="lively-text">lively.</span></h1>
     </div>
 
-    <div class="leaves-container"></div>
-
-    <div id="main-content">
+    <div id="main-content" class="hidden">
         <header>
-            <div class="logo">
-                <div class="globe">
-                    <div class="t-in-globe">T</div>
-                </div>
-                <h1>LivelyTranslate</h1>
-            </div>
+            <h1>LivelyTranslate</h1>
         </header>
-        
-        <main>
-            <div class="translator-grid">
-                <div class="text-box-wrapper">
-                    <div class="language-header" id="source-lang-header">Detect Language</div>
-                    <textarea id="input-text" placeholder="Enter text"></textarea>
-                </div>
-
-                <div class="controls">
-                    <button id="switch-languages" title="Switch Languages">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
-                        </svg>
+        <div class="translator-container">
+            <div class="text-box-container">
+                <textarea id="input-text" placeholder="Enter text"></textarea>
+                <div class="bottom-bar">
+                    <button id="switch-languages">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXJldmFtcC1ob3Jpem9udGFsIj48cGF0aCBkPSJNMjEgNy41SDNhMiAyIDAgMCAwLTIgMnYyYTIgMiAwIDAgMCAyIDJoMThhMiAyIDAgMCAxIDIgMnYyYTIgMiAwIDAgMS0yIDIiLz48cGF0aCBkPSJtNiA2IDEtNEgyIi8+PHBhdGggZD0ibTE4IDE4LTEgNEgyMiIvPjwvc3ZnPg==" alt="Switch Languages">
                     </button>
                 </div>
-
-                <div class="text-box-wrapper">
-                    <select id="language-dropdown" aria-label="Select translation language"></select>
-                    <textarea id="output-text" placeholder="Translation" readonly></textarea>
-                </div>
             </div>
-
-            <div class="button-container">
-                <button id="translate-button">Translate</button>
+            <button id="translate-button">Translate</button>
+            <div class="text-box-container">
+                <select id="language-dropdown"></select>
+                <textarea id="output-text" placeholder="Translation" readonly></textarea>
             </div>
-        </main>
+        </div>
     </div>
 
     <script src="script.js"></script>
