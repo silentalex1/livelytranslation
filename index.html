@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LivelyTranslate</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23ff8c00%22/><text x=%2250%%22 y=%2250%%22 style=%22font-size: 60px; font-weight: bold; fill: %231a1a1a; text-anchor: middle; dy: .3em;%22>T</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23ff8c00%22/><text x=%2250%%22 y=%2250%%22 style=%22font-size: 60px; font-weight: bold; fill: %231a1a1a; text-anchor: middle; dy: .3em;%22>T</text></svg>">
 </head>
 <body>
 
@@ -26,30 +26,29 @@
                 <h1>LivelyTranslate</h1>
             </div>
         </header>
+
         <main>
-            <div class="translator-container">
-                <div class="text-box-wrapper">
-                    <div class="language-header" id="source-lang-header">Detect Language</div>
-                    <div class="text-box-container">
-                        <textarea id="input-text" placeholder="Enter text..."></textarea>
-                    </div>
-                </div>
-
-                <div class="controls">
-                    <button id="switch-languages" title="Switch Languages">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="text-box-wrapper">
-                     <select id="language-dropdown" aria-label="Select language"></select>
-                    <div class="text-box-container">
-                        <textarea id="output-text" placeholder="Translation" readonly></textarea>
-                    </div>
+            <div class="language-controls">
+                <div id="source-lang-display" class="lang-box">Detect Language</div>
+                <button id="switch-languages" title="Switch Languages">
+                    <svg xmlns="http://www.w.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
+                    </svg>
+                </button>
+                <div class="lang-box select-wrapper">
+                    <select id="language-dropdown" aria-label="Select language"></select>
                 </div>
             </div>
+
+            <div class="translator-container">
+                <div class="text-box-container">
+                    <textarea id="input-text" placeholder="Enter text"></textarea>
+                </div>
+                <div class="text-box-container">
+                    <textarea id="output-text" placeholder="Translation" readonly></textarea>
+                </div>
+            </div>
+
             <div class="button-container">
                  <button id="translate-button">Translate</button>
             </div>
