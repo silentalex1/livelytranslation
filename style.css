@@ -1,9 +1,9 @@
 :root {
     --primary-bg: #1a1a1a;
-    --secondary-bg: #2a2a2a;
+    --secondary-bg: #262626;
     --text-color: #f0f0f0;
-    --accent-color: #ff8c00;
-    --green-accent: #00ff00;
+    --accent-color: #ff8c00; /* Dark Orange */
+    --green-accent: #50c878; /* Emerald Green */
     --border-color: #444;
 }
 
@@ -15,6 +15,7 @@ body {
     overflow: hidden;
 }
 
+/* --- Startup Animation --- */
 #startup-animation {
     position: fixed;
     top: 0;
@@ -26,47 +27,47 @@ body {
     align-items: center;
     background-color: var(--primary-bg);
     z-index: 1000;
-    animation: fadeOutBackground 7s forwards;
-    animation-delay: 1s;
+    opacity: 1;
+    transition: opacity 1s ease-out 6s;
 }
 
-@keyframes fadeOutBackground {
-    0% { opacity: 1; }
-    85% { opacity: 1; }
-    100% { opacity: 0; visibility: hidden; }
+#animated-text-container {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: bold;
+    perspective: 800px;
 }
 
 #animated-text {
-    font-size: 5rem;
-    font-weight: bold;
+    display: inline-block;
     opacity: 0;
-    animation: fadeInOut 7s forwards;
+    transform: translateY(50px) rotateX(-90deg);
+    animation: revealText 7s forwards;
 }
 
 .lively-text {
     color: var(--green-accent);
 }
 
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: scale(0.8); }
-    20% { opacity: 1; transform: scale(1); }
-    80% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.2); }
+@keyframes revealText {
+    0% { opacity: 0; transform: translateY(50px) rotateX(-90deg); }
+    15%, 85% { opacity: 1; transform: translateY(0) rotateX(0deg); }
+    100% { opacity: 0; transform: translateY(-50px) rotateX(90deg); }
 }
 
+/* --- Main Content --- */
 #main-content {
-    display: none;
+    display: flex;
     flex-direction: column;
     height: 100vh;
     padding: 2rem;
     box-sizing: border-box;
     opacity: 0;
-    animation: fadeInContent 1s forwards;
-    animation-delay: 7.5s;
+    transform: scale(0.95);
+    animation: fadeInContent 1s forwards 7s;
 }
 
 @keyframes fadeInContent {
-    to { opacity: 1; }
+    to { opacity: 1; transform: scale(1); }
 }
 
 header {
@@ -98,85 +99,161 @@ header {
 header h1 {
     font-size: 2.5rem;
     margin: 0;
-    background: -webkit-linear-gradient(var(--accent-color), #ff4500);
+    background: linear-gradient(45deg, var(--accent-color), #e67e22);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
+/* --- Translator Interface --- */
 .translator-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 1rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.text-box-wrapper {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+}
+
+.language-header, #language-dropdown {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: none;
+}
+
+#language-dropdown {
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23f0f0f0' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
 }
 
 .text-box-container {
-    display: flex;
-    flex-direction: column;
-    width: 45%;
+    position: relative;
+    width: 100%;
 }
 
 textarea {
     width: 100%;
-    height: 200px;
+    height: 250px;
     background-color: var(--secondary-bg);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
     color: var(--text-color);
     padding: 1rem;
     font-size: 1.2rem;
     resize: none;
     box-sizing: border-box;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    transition: all 0.3s ease;
 }
 
 textarea:focus {
     outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color);
-}
-
-#language-dropdown {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    background-color: var(--secondary-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
 }
 
 .controls {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    padding-top: 3rem;
+}
+
+#switch-languages {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+#switch-languages:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: rotate(180deg);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
     margin-top: 2rem;
 }
 
-#translate-button, #switch-languages {
-    padding: 1rem 2rem;
+#translate-button {
+    padding: 1rem 3rem;
     background-color: var(--accent-color);
     border: none;
     border-radius: 8px;
     color: var(--primary-bg);
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-#translate-button:hover, #switch-languages:hover {
+#translate-button:hover {
     background-color: #e67e22;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
-#switch-languages {
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#translate-button:active {
+    transform: translateY(-1px);
 }
 
-#switch-languages svg {
-    fill: var(--primary-bg);
+
+/* --- Falling Leaves Background --- */
+.leaves-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.leaf {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 0 C 20 20, 20 80, 50 100 C 80 80, 80 20, 50 0 Z" fill="rgba(255, 140, 0, 0.7)"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotateZ(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+    }
 }
