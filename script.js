@@ -1,145 +1,103 @@
 document.addEventListener('DOMContentLoaded', () => {
     const startupAnimation = document.getElementById('startup-animation');
-    const animatedText = document.getElementById('animated-text');
     const mainContent = document.getElementById('main-content');
+    const morphText = document.querySelector('.morph-text');
     const inputText = document.getElementById('input-text');
     const outputText = document.getElementById('output-text');
+    const languageDropdown = document.getElementById('language-dropdown');
     const translateButton = document.getElementById('translate-button');
     const switchLanguagesButton = document.getElementById('switch-languages');
-    const languageDropdown = document.getElementById('language-dropdown');
-    const sourceLangHeader = document.getElementById('source-lang-header');
-    const leavesContainer = document.querySelector('.leaves-container');
 
-    let sourceLang = 'auto';
-    let targetLang = 'es';
-    let detectedLang = '';
+    const apiUrl = 'https://api.livelytranslate.cfd';
 
-    const animationPhrases = [
-        `Translate <span class="lively-text">lively.</span>`,
-        `Traducir <span class="lively-text">fluidamente.</span>`,
-        `Traduire <span class="lively-text">avec aisance.</span>`,
-        `Übersetzen <span class="lively-text">lebendig.</span>`,
-        `翻訳する <span class="lively-text">生き生きと.</span>`
+    const languages = [
+        "Translate lively.",
+        "Traducir animadamente.",
+        "Traduire vivement.",
+        "翻译得活泼.",
+        "Переводите оживленно."
     ];
-    let phraseIndex = 0;
 
-    const runStartupAnimation = () => {
-        const interval = setInterval(() => {
-            phraseIndex++;
-            if (phraseIndex < animationPhrases.length) {
-                animatedText.style.opacity = 0;
-                setTimeout(() => {
-                    animatedText.innerHTML = animationPhrases[phraseIndex];
-                    animatedText.style.opacity = 1;
-                }, 400);
-            } else {
-                clearInterval(interval);
-            }
-        }, 1200);
-    };
-    
+    let currentLanguageIndex = 0;
+    const morphInterval = setInterval(() => {
+        currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+        morphText.innerHTML = languages[currentLanguageIndex].replace('lively.', '<span class="lively-text">lively.</span>');
+    }, 1000);
+
     setTimeout(() => {
-        if(mainContent) mainContent.style.opacity = 1;
-    }, 6500);
+        clearInterval(morphInterval);
+        startupAnimation.style.display = 'none';
+        mainContent.classList.remove('hidden');
+        mainContent.style.display = 'flex';
+    }, 5000);
 
-    const languages = { 'en': 'English', 'es': 'Spanish', 'fr': 'French', 'de': 'German', 'ja': 'Japanese', 'it': 'Italian', 'pt': 'Portuguese', 'ru': 'Russian', 'zh': 'Chinese', 'ko': 'Korean', 'ar': 'Arabic', 'hi': 'Hindi' };
-    
-    const populateLanguages = () => {
-        if (!languageDropdown) return;
-        for (const [code, name] of Object.entries(languages)) {
-            const option = document.createElement('option');
-            option.value = code;
-            option.textContent = name;
-            languageDropdown.appendChild(option);
-        }
-        languageDropdown.value = targetLang;
+    const languageOptions = {
+        "Spanish": "es",
+        "French": "fr",
+        "German": "de",
+        "Chinese (Simplified)": "zh-CN",
+        "Japanese": "ja",
+        "Russian": "ru",
+        "Italian": "it",
+        "Portuguese": "pt",
+        "Korean": "ko",
+        "Arabic": "ar",
+        "Hindi": "hi",
+        "Reverse Text": "reverse"
     };
 
-    const createLeaves = () => {
-        if (!leavesContainer) return;
-        for (let i = 0; i < 15; i++) {
-            const leaf = document.createElement('div');
-            leaf.className = 'leaf';
-            leaf.style.left = `${Math.random() * 100}vw`;
-            leaf.style.animationDuration = `${Math.random() * 8 + 7}s`;
-            leaf.style.animationDelay = `${Math.random() * 5}s`;
-            leavesContainer.appendChild(leaf);
-        }
-    };
+    for (const [name, code] of Object.entries(languageOptions)) {
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = name;
+        languageDropdown.appendChild(option);
+    }
 
-    const fetchTranslation = async () => {
-        const text = inputText.value.trim();
-        if (!text) {
+    const handleTranslation = async () => {
+        const textToTranslate = inputText.value;
+        const targetLanguage = languageDropdown.value;
+
+        if (textToTranslate.trim() === "") {
             outputText.value = "";
             return;
         }
 
-        translateButton.textContent = 'Translating...';
-        translateButton.disabled = true;
-        outputText.value = '...';
-
-        const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${targetLang}`;
+        let endpoint = '';
+        let body = {};
+        
+        if (targetLanguage === 'reverse') {
+            endpoint = '/reverse';
+            body = { text: textToTranslate };
+        } else {
+            endpoint = '/translate';
+            body = { text: textToTranslate, targetLang: targetLanguage };
+        }
 
         try {
-            const response = await fetch(apiUrl);
-            if (!response.ok) throw new Error('Network error');
-            const data = await response.json();
+            const response = await fetch(`${apiUrl}${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+            });
 
-            if (data.responseData) {
-                outputText.value = data.responseData.translatedText;
-                detectedLang = data.responseData.detectedLanguage.toLowerCase();
-                if (sourceLang === 'auto' && detectedLang && languages[detectedLang]) {
-                    sourceLangHeader.textContent = `Detected: ${languages[detectedLang]}`;
-                }
-            } else {
-                outputText.value = "Translation failed.";
+            if (!response.ok) {
+                throw new Error('API request failed');
             }
+
+            const data = await response.json();
+            outputText.value = data.translation || data.reversedText;
         } catch (error) {
-            outputText.value = "Service connection error.";
-        } finally {
-            translateButton.textContent = 'Translate';
-            translateButton.disabled = false;
+            outputText.value = 'Error: Could not connect to the translation service.';
         }
     };
 
-    if (translateButton) translateButton.addEventListener('click', fetchTranslation);
+    translateButton.addEventListener('click', handleTranslation);
 
-    if (languageDropdown) {
-        languageDropdown.addEventListener('change', (e) => {
-            targetLang = e.target.value;
-        });
-    }
-
-    if (switchLanguagesButton) {
-        switchLanguagesButton.addEventListener('click', () => {
-            const tempText = inputText.value;
-            inputText.value = outputText.value;
-            outputText.value = tempText;
-
-            if (detectedLang && languages[detectedLang]) {
-                const newTargetLang = detectedLang;
-                const newSourceLang = targetLang;
-                
-                sourceLang = newSourceLang;
-                targetLang = newTargetLang;
-                detectedLang = '';
-
-                languageDropdown.value = targetLang;
-                sourceLangHeader.textContent = languages[sourceLang];
-            }
-        });
-    }
-
-    if(inputText) {
-        inputText.addEventListener('input', () => {
-            if (sourceLang !== 'auto') {
-                sourceLang = 'auto';
-                sourceLangHeader.textContent = 'Detect Language';
-            }
-        });
-    }
-
-    runStartupAnimation();
-    populateLanguages();
-    createLeaves();
+    switchLanguagesButton.addEventListener('click', () => {
+        const tempText = inputText.value;
+        inputText.value = outputText.value;
+        outputText.value = tempText;
+    });
 });
